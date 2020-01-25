@@ -22,9 +22,6 @@
 #include <string>
 #include <vector>
 
-
-
-
 using namespace std;
 
 /**
@@ -41,22 +38,17 @@ public:
   // insert output to SS rather than cout, so we can test it
   static stringstream SS;
 
-  static string getSS() {
-    return SS.str();
-  }
+  // get SS as a string
+  static string getSS() { return SS.str(); }
 
-  static void resetSS() {
-    SS.str(string());
-  }
-  // instead of cout, insert item into a string stream
-  static void visitor(const string &Item) {
-    SS << Item;
-  }
+  // set SS to be empty string
+  static void resetSS() { SS.str(string()); }
 
-  // instead of cout, insert item into a string stream
-  static void visitor(const int &Item) {
-    SS << Item;
-  }
+  // instead of cout, insert item into SS, a stringstream object
+  static void visitor(const string &Item) { SS << Item; }
+
+  // instead of cout, insert item into SS, a stringstream object
+  static void visitor(const int &Item) { SS << Item; }
 };
 
 // initialize the static variable
@@ -65,6 +57,10 @@ public:
 //  Not sure how to do it without making code harder to read
 //  NOLINTNEXTLINE
 stringstream TreeVisitor::SS;
+
+template <class T> void visitorSimple(const T &Item) {
+  cout << "visitorSimple: " << Item;
+}
 
 /**
  * Test functions by Yusuf Pisan
@@ -140,6 +136,10 @@ void testPisan03() {
   B1.inOrderTraverse(TreeVisitor::visitor);
   string Result = "acfgx";
   assert(TreeVisitor::getSS() == Result);
+
+  // testing out simpleVisitor to demonstrate
+  // any function that has a matching signature can be called
+  B1.inOrderTraverse(visitorSimple);
 
   TreeVisitor::resetSS();
   B1.preOrderTraverse(TreeVisitor::visitor);
